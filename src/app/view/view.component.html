@@ -1,0 +1,52 @@
+
+<div class="container-fluid">  
+    <br />
+    <br /> 
+    <div class="col-lg-12">
+      <div class="row" id="new">
+          <h3>Videos </h3>
+          <div class="displayMargin">
+            <button  type="button" (click)="navigateAdd()" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New</button>
+          </div>
+      </div>
+    <hr/>
+    <br />
+    <br />
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>SNo</th>
+          <th>Name</th>
+          <th>Display Name</th>
+          <th>Url</th>
+          <th>Duration</th>
+          <th>Category</th>
+          <th>Level</th>
+          <th>Status</th>
+          <th>&nbsp;&nbsp;Actions</th>
+        </tr>
+      </thead>
+    
+      <tbody *ngFor="let video of video;let i=index;">
+        <tr >
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['viewlist']" [queryParams]="{ id:video.id }">{{video.name}}</a></td>
+          <td>{{video.displayName}}</td>
+          <td>{{video.url}}</td>
+          <td>{{video.duration}}</td>
+          <td>{{video.category.name}}</td>
+          <td>{{video.level.name}}</td>
+          <td><ng-container *ngIf="video.status; else inactive"><button type="button" (click)="toggleStatus(video.id)" class="btn btn-success btn-sm">Active</button></ng-container>
+          <ng-template #inactive><button type="button" (click)="toggleStatus(video.id)" class="btn btn-warning btn-sm">Inactive</button></ng-template>
+          </td>
+          <td>
+          &nbsp;&nbsp;
+          <i class="fa fa-pencil-square-o btn btn-primary btn-sm" [routerLink]="['edit']" [queryParams]="{ id:video.id }" aria-hidden="true"></i>
+          &nbsp;&nbsp;
+          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteVideo(video.id)" aria-hidden="true"></i>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
