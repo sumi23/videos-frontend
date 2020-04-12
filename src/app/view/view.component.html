@@ -1,15 +1,21 @@
 
-<div class="container-fluid">  
-    <br />
-    <br /> 
+<div class="container-fluid"> 
     <div class="col-lg-12">
       <div class="row" id="new">
           <h3>Videos </h3>
           <div class="displayMargin">
-            <button  type="button" (click)="navigateAdd()" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New</button>
+            <button  type="button" (click)="navigateAdd()" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" ></i> Create New</button>
           </div>
       </div>
     <hr/>
+    <div>
+      <div class="alert alert-info alert-dismissible fade show color" *ngIf=this.deleteSuccessMessageFlag>
+        <strong >Video deleted successfully</strong>
+      </div>
+      <div class="alert alert-info alert-dismissible fade show color" *ngIf=this.statusUpdateSuccessMessageFlag>
+        <strong >Video status updated successfully</strong>
+      </div>
+    </div>
     <br />
     <br />
     <table class="table table-striped">
@@ -41,9 +47,9 @@
           </td>
           <td>
           &nbsp;&nbsp;
-          <i class="fa fa-pencil-square-o btn btn-primary btn-sm" [routerLink]="['edit']" [queryParams]="{ id:video.id }" aria-hidden="true"></i>
+          <i class="fa fa-pencil-square-o btn btn-primary btn-sm" [routerLink]="['edit']" [queryParams]="{ id:video.id }"></i>
           &nbsp;&nbsp;
-          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteVideo(video.id)" aria-hidden="true"></i>
+          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteVideo(video.id)" ></i>
         </td>
         </tr>
       </tbody>

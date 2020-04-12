@@ -1,12 +1,5 @@
-<script>function showName () {
-  var name = document.getElementById('fileInput'); 
-  alert('Selected file: ' + name.files.name);
-  return name.files.name;
-}
-</script>
 <div class="container-fluid">
-  <br /><br />
-  <div class="row">
+  <div class="row" id="new">
     <div class=col-md-10>
       <h3>Videos</h3>
     </div>
@@ -18,46 +11,54 @@
     </div>
   </div>
   <hr />
+  <div class="alert alert-info alert-dismissible fade show color" *ngIf=this.addSuccessMessageFlag>
+    <strong>Video added successfully</strong>
+  </div>
   <form [formGroup]="videoForm">
     <div class="form-group row">
       <label class=" col-md-2 control-label">Video Name :<span class="required-asterisk">*</span></label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" autocomplete="off" maxlength="100" formControlName="name" 
-                   [ngClass]="{'has-error': videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty }">
-      &nbsp; &nbsp;
-       <span class="text-danger" *ngIf="videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty "> 
-        <span  *ngIf="videoControls.name.errors?.required">Video name is required</span>
-       </span> 
+        <input type="text" placeholder="Introduction to java" class="col-sm-6" autocomplete="off" maxlength="100"
+          formControlName="name"
+          [ngClass]="{'has-error': videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty }">
+        &nbsp; &nbsp;
+        <span class="text-danger"
+          *ngIf="videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty ">
+          <span *ngIf="videoControls.name.errors?.required">Video name is required</span>
+        </span>
       </div>
       <label class="col-md-2 control-label">Display Name :<span class="required-asterisk">*</span></label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" formControlName="displayName"
-        [ngClass]="{'has-error': videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty }">
+        <input type="text" placeholder="Introduction to java" class="col-sm-6" formControlName="displayName"
+          [ngClass]="{'has-error': videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty }">
         &nbsp; &nbsp;
-        <span class="text-danger" *ngIf="videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty "> 
-         <span  *ngIf="videoControls.displayName.errors?.required">Display name is required</span>
+        <span class="text-danger"
+          *ngIf="videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty ">
+          <span *ngIf="videoControls.displayName.errors?.required">Display name is required</span>
         </span>
       </div>
       <label class=" col-md-2 control-label">Video Url :<span class="required-asterisk">*</span> </label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" formControlName="url"
-        [ngClass]="{'has-error': videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty }">
+        <input type="text" placeholder="https://www.youtube.com/embed/" class="col-sm-6" formControlName="url"
+          [ngClass]="{'has-error': videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty }">
         &nbsp; &nbsp;
-        <span class="text-danger" *ngIf="videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty "> 
-         <span  *ngIf="videoControls.url.errors?.required">Url is required</span>
+        <span class="text-danger"
+          *ngIf="videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty ">
+          <span *ngIf="videoControls.url.errors?.required">Url is required</span>
         </span>
       </div>
       <label class=" col-md-2 control-label">Duration: </label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" formControlName="duration">
+        <input type="text" placeholder="01:01:01" class="col-sm-6" formControlName="duration">
       </div>
       <label class=" col-md-2 control-label">Tags :<span class="required-asterisk">*</span> </label>
       <div class="col-md-10">
         <input type="text" formControlName="tags"
-        [ngClass]="{'has-error': videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty }">
+          [ngClass]="{'has-error': videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty }">
         &nbsp; &nbsp;
-        <span class="text-danger" *ngIf="videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty "> 
-         <span  *ngIf="videoControls.tags.errors?.required">Tags are required</span>
+        <span class="text-danger"
+          *ngIf="videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty ">
+          <span *ngIf="videoControls.tags.errors?.required">Tags are required</span>
         </span>
       </div>
       <label class=" col-md-2 control-label">Description </label>
@@ -84,7 +85,9 @@
       </div>
       <label class=" col-md-2 control-label">Transcript: </label>
       <div class="col-md-10">
-        <input type="file"  (change)=uploadFile($event) class="col-sm-6" formControlName="transcript">
+        <input type="file" (change)=uploadFile($event) class="col-sm-6" formControlName="transcript">
+        <br />
+        <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
       </div>
       <!--end of video form-->
 
@@ -106,15 +109,19 @@
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="name" />
+                  <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Artifact :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
-                  <input type="file" id="fileInput" (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
+                  <input type="file" id="fileInput" (change)=uploadFile($event) class="col-sm-6"
+                    formControlName="file" />
+                  <br />
+                  <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+                  <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                    formControlName="description"></textarea>
                 </div>
                 <br /><br /><br />
                 <button class="btn btn-danger btn-sm" (click)="deleteRefArt(refArtindex)">Remove </button>
@@ -144,15 +151,17 @@
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="name" />
+                  <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Artifact :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
-                  <input type="file" value=showName() (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
+                  <input type="file" (change)=uploadFile($event) class="col-sm-6" formControlName="file" /><br />
+                  <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+                  <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                    formControlName="description"></textarea>
                 </div>
                 <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>
               </div>
@@ -180,7 +189,7 @@
             <div class="form-group row">
               <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
               <div class="col-md-10">
-                <input type="text" class="col-sm-6" formControlName="name" />
+                <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
               </div>
               <label class=" col-md-2 control-label">Url :<span class="required-asterisk">*</span></label>
               <div class="col-md-10">
@@ -188,7 +197,8 @@
               </div>
               <label class=" col-md-2 control-label">Description:</label>
               <div class="col-md-10">
-                <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+                <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                  formControlName="description"></textarea>
               </div>
               <br /><br /><br />
               <button class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>

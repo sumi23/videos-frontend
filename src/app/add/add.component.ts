@@ -17,6 +17,7 @@ export class AddComponent implements OnInit {
   videoForm: FormGroup;
   level: FormGroup;
   video: Video;
+  addSuccessMessageFlag:boolean;
   constructor(private crudservice: CrudService,private router:Router, private formbuilder: FormBuilder) {
 
   }
@@ -64,7 +65,7 @@ export class AddComponent implements OnInit {
       )]),
       referenceUrl: this.formbuilder.array([this.formbuilder.group(
         {
-          name: '',
+          name: [''],
           url: [''],
           description: ['']
         }
@@ -117,14 +118,14 @@ export class AddComponent implements OnInit {
 
   viewLevels() {
     this.crudservice.viewLevels().subscribe((result: any) => {
-      this.levels = result;
+      this.levels = result.data;
       console.log(this.levels);
     });
   }
 
   viewCategories() {
     this.crudservice.viewCategories().subscribe((result: any) => {
-      this.categories = result;
+      this.categories = result.data;
       console.log(this.categories);
     });
   }
@@ -139,13 +140,10 @@ export class AddComponent implements OnInit {
 
   save() {
      
-    //this.videoForm.patchValue(this.referenceArtifact[{file:}])
     this.video = this.videoForm.value;
     console.log(this.video);
     this.crudservice.addVideo(this.video).subscribe((result: any) => {
-       console.log("res is"+result);
-      console.log("response is"+result.headers);
-      console.log(result.video);
+      this.addSuccessMessageFlag=true;
     });
 
   }
@@ -154,32 +152,8 @@ export class AddComponent implements OnInit {
        this.router.navigate(['view']);
     }  
     
-    @ViewChild('file1') file1: any;
-    selectedFiles: FileList;
-    fileName: string;
-   showName(event):string
-   {
-    this.selectedFiles = event.target.files;
-    this.fileName = this.selectedFiles[0].name;
-    console.log('selectedFiles: ' + this.fileName )
-    this.file1=this.fileName;
-    return this.fileName;
    
-   }
-
-  //  uploadFile(files)
-  //  {
-  //     let file:File=files[0];
-  //     const formData = new FormData();  
-  //   formData.append('file', files.data);  
-  //   this.crudservice.uploadFile(formData).subscribe((result:any)=>
-  //   {
-  //     console.log(result);
-  //   }
-  //   );
-  //  }
-    
-  
+  fileName: string;
   file:File;
   selectedFile=null;
   uploadFile(event)
@@ -187,8 +161,6 @@ export class AddComponent implements OnInit {
      this.selectedFile=event.target.files[0];
      this.fileName = this.selectedFile.name;
      console.log('selectedFilesname: ' + this.fileName )
-     this.file1=this.fileName;
-     console.log(this.selectedFile);
      const payload = new FormData();  
      payload.append('file', this.selectedFile);  
     this.crudservice.uploadFile(payload).subscribe((result:any)=>

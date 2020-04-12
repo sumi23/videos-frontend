@@ -1,7 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 #id{margin-right:300px;}
+
+#middle{
+    margin-left:200px;
+}
 .contentsize{
+    margin-left:50px;
     font-size:smaller
+}
+#left{
+    margin-left:20px;
+    font-weight:500;
+}
+
+#left-intend{
+    margin-left:30px
 }
 .displayMargin{
     
@@ -9,7 +22,7 @@
     right: 20px;
 }
 #new{
-    top:20px;
+    margin-top:50px;
 }
 .required-asterisk{
     color: red;

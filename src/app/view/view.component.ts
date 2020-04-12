@@ -9,9 +9,14 @@ import { Video } from '../model/video';
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent implements OnInit {
+
 video:Array<Video>=[];
 id:Number=0;
 file:string;
+result:boolean;
+statusUpdateSuccessMessageFlag:boolean;
+deleteSuccessMessageFlag:boolean;
+
   constructor(private obj:CrudService,private router:Router) { }
 
   ngOnInit(): void {
@@ -20,27 +25,34 @@ file:string;
   listVideo(){
     this.obj.listVideo().subscribe((result:any)=>
     {
-      this.video=result;
-      console.log(result);
+      this.video=result.data;
     }
     );
    
   }
+
   toggleStatus(id:number){
+    this.result=confirm("Are you sure want to toggle the status?");
+   if(this.result==true){
     this.obj.toggleStatus(id).subscribe(result=>{
+      this.statusUpdateSuccessMessageFlag=true;
       this.listVideo();
-      console.log(result);
     }
     );
-  }
+  }}
+
+  
   deleteVideo(id: number) {
+    this.result=confirm("Are you sure want to delete this video content?");
+   if(this.result==true){
     this.obj.deleteVideo(id).subscribe(
         data => {
-          console.log(data);
+          this.deleteSuccessMessageFlag=true;
           this.listVideo();
-        },
-        error => console.log(error));
-  }
+        });
+    
+    
+  }}
 
   navigateAdd()
   {

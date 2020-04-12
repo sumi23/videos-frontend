@@ -11,6 +11,7 @@ import { SafeUrlPipe } from './safe-url.pipe';
 import { AddComponent } from './add/add.component';
 import {  ReactiveFormsModule } from '@angular/forms';
 import { EditComponent } from './edit/edit.component';
+import { FileNamePipe } from './file-name.pipe';
 //import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
 @NgModule({
@@ -21,6 +22,7 @@ import { EditComponent } from './edit/edit.component';
     SafeUrlPipe,
     AddComponent,
     EditComponent,
+    FileNamePipe,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,7 @@ import { EditComponent } from './edit/edit.component';
     HttpClientModule,
     ReactiveFormsModule  
   ],
-  providers: [HttpClientModule,CrudService],
+  providers: [HttpClientModule,CrudService, FileNamePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

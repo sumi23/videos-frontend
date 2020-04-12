@@ -5,6 +5,7 @@ import { Category } from '../model/category';
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Video } from '../model/video';
 import { CrudService } from '../crud.service';
+import { FileNamePipe } from '../file-name.pipe';
 
 @Component({
   selector: 'app-edit',
@@ -21,8 +22,9 @@ export class EditComponent implements OnInit {
   category1:Category;
   vid:any;
   id:number;
+  updateSuccessMessageFlag:boolean;
   submitted = false;
-  constructor(private route:ActivatedRoute,private crudservice: CrudService, private formbuilder: FormBuilder,private router:Router) { }
+  constructor(private route:ActivatedRoute,private crudservice: CrudService, private formbuilder: FormBuilder,private router:Router,private filepipe:FileNamePipe) { }
 
   ngOnInit(): void {
 
@@ -45,7 +47,7 @@ export class EditComponent implements OnInit {
       name: ['',[Validators.required]],
       displayName: ['',[Validators.required]],
       url: ['',[Validators.required]],
-      duration: [{value:'',disabled: true}],
+      duration: [''],
       tags: ['',[Validators.required]],
       status:[''],
       description: [''],
@@ -80,7 +82,6 @@ export class EditComponent implements OnInit {
         }
       )])
     });
-    //this.videoForm.get('status').setValue('true');
   }
 
 get videoControls(){
@@ -88,20 +89,12 @@ get videoControls(){
 }
 
 
-videoobj:Array<Video>;
-i:number=0;
-checkValue:boolean;
-//object:any=this.video.referenceArtifact;
+videoobj:Array<Video>
  listVideoById(){
   this.crudservice.listVideoById(this.id).subscribe(result=>
   {
-    this.videoobj=new Array(result);
-    this.video=result;
-    console.log(this.video);
-    console.log(this.video.level.id)
-    //this.checkValue=this.video[0].status;
-    //console.log(this.checkValue);
-    //console.log(this.video[0].name);
+    this.videoobj=new Array(result.data);
+    this.video=result.data;
     this.videoForm.patchValue({
       name :this.video.name,
       displayName:this.video.displayName,
@@ -111,47 +104,35 @@ checkValue:boolean;
       status:this.video.status,
       description:this.video.description,
       level: { id: this.video.level.id},
-      category: { id: this.video.category.id},
-  //    referenceUrl:[
-  //     {
-  //       name:this.video[0].referenceUrl[0].name,
-  //       url:this.video[0].referenceUrl[0].url,
-  //       description:this.video[0].referenceUrl[0].description
-  //     }
-  //  ]
+      category: { id: this.video.category.id}
     });
-   this.patchRefArt();
+    this.patchRefArt();
     this.patchSamProg();
     this.patchRefUrl();
   });
 }
 
-filestr:string="C:/fakepath/";
-
 patchRefArt() {
   this.deleteRefArt(0);
   let control = this.videoForm.get('referenceArtifact') as FormArray;
-  // let control = <FormArray>this.form.controls['resultList'];
- this.video.referenceArtifact.forEach(x=>{
+  this.video.referenceArtifact.forEach(x=>{
       control.push(this.formbuilder.group({
           name: x.name,
           file:'',
-          filename:x.file, 
+          filename:this.filepipe.transform(x.file), 
           description: x.description,
 
       }));
   });
 }
-reffile:any;
 patchSamProg() {
   this.deleteSamProg(0);
   let control = this.videoForm.get('sampleProgram') as FormArray;
- this.video.sampleProgram.forEach(x=>{
-    this.reffile=x.file;
+  this.video.sampleProgram.forEach(x=>{
       control.push(this.formbuilder.group({
           name: x.name,
           file:'', 
-          filename:x.file,    
+          filename:this.filepipe.transform(x.file),    
           description: x.description,
       }));
   });
@@ -169,27 +150,40 @@ patchSamProg() {
         }));
     });
     
-    // const refUrllen=this.video[0].referenceUrl.length;
-    // console.log("ref art length is:"+refUrllen);
-    // for(let i=0;i< refUrllen;i++){
-    //   this.videoForm.patchValue({ referenceUrl:[
-    //     {
-    //       name:this.video[0].referenceUrl[i].name,
-    //     url:this.video[0].referenceUrl[i].url,
-    //     description:this.video[0].referenceUrl[i].description
-
-    //     }
-    //   ] });
-    // }
    
   }
-  deleteRefUrlById(id: number) {
-    this.crudservice.deleteReferenceUrlById(id).subscribe(
+  result:boolean;
+  deleteRefArtById(id: number) {
+   this.result=confirm("Are you sure want to delete this video content?");
+   if(this.result==true){
+  this.crudservice.deleteReferenceArtifactById(id).subscribe(
         data => {
           console.log(data);
         },
         error => console.log(error));
   }
+}
+
+  deleteSamProgById(id: number) {
+    this.result=confirm("Are you sure want to delete this video content?");
+   if(this.result==true){
+    this.crudservice.deleteSampleProgramById(id).subscribe(
+        data => {
+          console.log(data);
+        },
+        error => console.log(error));
+  }}
+
+  deleteRefUrlById(id: number) {
+    this.result=confirm("Are you sure want to delete this video content?");
+   if(this.result==true){
+    this.crudservice.deleteReferenceUrlById(id).subscribe(
+        data => {
+          console.log(data);
+        },
+        error => console.log(error));
+  }}
+
   get referenceArtifact() {
     return this.videoForm.get('referenceArtifact') as FormArray;
   }
@@ -235,14 +229,14 @@ patchSamProg() {
 
   viewLevels() {
     this.crudservice.viewLevels().subscribe((result: any) => {
-      this.levels = result;
+      this.levels = result.data;
       console.log(this.levels);
     });
   }
 
   viewCategories() {
     this.crudservice.viewCategories().subscribe((result: any) => {
-      this.categories = result;
+      this.categories = result.data;
       console.log(this.categories);
     });
   }
@@ -258,25 +252,26 @@ patchSamProg() {
   upvideo:Video;
   refArtlen:number; 
   save() {
-    //this.submitted = true;
+    this.submitted = true;
     if(this.videoForm.invalid){
       return;
     }
     confirm("validated");
     this.upvideo=this.videoForm.value;
     this.upvideo.id=this.video.id;
+    this.upvideo.createdOn=this.video.createdOn;
+    this.upvideo.createdBy=this.video.createdBy;
     this.refArtlen=this.video.referenceArtifact.length;
-    console.log("ref art length is:"+this.refArtlen);
     for(let i=0;i< this.refArtlen;i++){
       this.upvideo.referenceArtifact[i].id=this.video.referenceArtifact[i].id;
+      this.upvideo.referenceArtifact[i].file=this.filepipe.transform(this.video.referenceArtifact[i].file);
     } 
     const samProglen=this.video.sampleProgram.length;
-    console.log("sample program length is:"+samProglen);
     for(let i=0;i< samProglen;i++){
       this.upvideo.sampleProgram[i].id=this.video.sampleProgram[i].id;
+      this.upvideo.sampleProgram[i].file=this.filepipe.transform(this.video.sampleProgram[i].file);
     }
     const refUrllen=this.video.referenceUrl.length;
-    console.log("ref art length is:"+refUrllen);
     for(let i=0;i< refUrllen;i++){
       this.upvideo.referenceUrl[i].id=this.video.referenceUrl[i].id;
     }
@@ -286,6 +281,7 @@ patchSamProg() {
     this.crudservice.editVideo(this.upvideo).subscribe((result: any) => {
       this.video =result;
       console.log(this.video);
+      this.updateSuccessMessageFlag=true;
     });
 
   }
@@ -306,9 +302,9 @@ patchSamProg() {
      const payload = new FormData();  
      payload.append('file', this.selectedFile);  
     this.crudservice.uploadFile(payload).subscribe((result:any)=>
-   {
+    {
      console.log(result);
-   }
+    }
    );
   }
 

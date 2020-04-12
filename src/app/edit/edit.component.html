@@ -1,215 +1,217 @@
-  <div class="container-fluid">
-    <br /><br />
-    <div class="row">
-      <div class=col-md-10>
-        <h3>Videos</h3>
-      </div>
-      <div class="col-md-1">
-        <button class="btn btn-primary btn-sm" (click)="save()"><i class="fa fa-floppy-o"></i> Save</button>
-      </div>
-      <div class="col-md-1">
-        <button class="btn btn-primary btn-sm" (click)="back()"><i class="fa fa-angle-double-left"></i> Back</button>
-      </div>
+<div class="container-fluid">
+  <div class="row" id="new">
+    <div class=col-md-10>
+      <h3>Videos</h3>
     </div>
-    <hr />
-    <form [formGroup]="videoForm" novalidate>
-      
-      <div class="form-group row">
-        <label class=" col-md-2 control-label">Video Name : <span class="required-asterisk">*</span></label>
-        <div class="col-md-10">
-          <input type="text" class="col-sm-6" autocomplete="off" maxlength="100" formControlName="name" 
-                     [ngClass]="{'has-error': videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty }">
+    <div class="col-md-1">
+      <button class="btn btn-primary btn-sm" (click)="save()"><i class="fa fa-floppy-o"></i> Save</button>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-primary btn-sm" (click)="back()"><i class="fa fa-angle-double-left"></i> Back</button>
+    </div>
+  </div>
+  <hr />
+  <div class="alert alert-info alert-dismissible fade show color" *ngIf=this.updateSuccessMessageFlag>
+    <strong>Video updated successfully</strong>
+  </div>
+  <form [formGroup]="videoForm" novalidate>
+    <div class="form-group row">
+      <label class=" col-md-2 control-label">Video Name : <span class="required-asterisk">*</span></label>
+      <div class="col-md-10">
+        <input type="text" placeholder="Introduction to java" class="col-sm-6" autocomplete="off" maxlength="100"
+          formControlName="name"
+          [ngClass]="{'has-error': videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty }">
         &nbsp; &nbsp;
-         <span class="text-danger" *ngIf="videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty "> 
-          <span  *ngIf="videoControls.name.errors?.required">Video name is required</span>
-         </span> 
-        </div>
-        <label class="col-md-2 control-label">Display Name : <span class="required-asterisk">*</span></label>
-        <div class="col-md-10">
-          <input type="text" class="col-sm-6" formControlName="displayName"
+        <span class="text-danger"
+          *ngIf="videoControls.name.errors && videoControls.name.touched || videoControls.name.dirty ">
+          <span *ngIf="videoControls.name.errors?.required">Video name is required</span>
+        </span>
+      </div>
+      <label class="col-md-2 control-label">Display Name : <span class="required-asterisk">*</span></label>
+      <div class="col-md-10">
+        <input type="text" placeholder="Introduction to java" class="col-sm-6" formControlName="displayName"
           [ngClass]="{'has-error': videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty }">
-          &nbsp; &nbsp;
-          <span class="text-danger" *ngIf="videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty "> 
-           <span  *ngIf="videoControls.displayName.errors?.required">Display name is required</span>
-          </span>
-        </div>
-        <label class=" col-md-2 control-label">Video Url :<span class="required-asterisk">*</span> </label>
-        <div class="col-md-10">
-          <input type="text" class="col-sm-6" formControlName="url"
+        &nbsp; &nbsp;
+        <span class="text-danger"
+          *ngIf="videoControls.displayName.errors && videoControls.displayName.touched || videoControls.displayName.dirty ">
+          <span *ngIf="videoControls.displayName.errors?.required">Display name is required</span>
+        </span>
+      </div>
+      <label class=" col-md-2 control-label">Video Url :<span class="required-asterisk">*</span> </label>
+      <div class="col-md-10">
+        <input type="text" placeholder="https://www.youtube.com/embed/" class="col-sm-6" formControlName="url"
           [ngClass]="{'has-error': videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty }">
-          &nbsp; &nbsp;
-          <span class="text-danger" *ngIf="videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty "> 
-           <span  *ngIf="videoControls.url.errors?.required">Url is required</span>
-          </span>
-        </div>
-        <label class=" col-md-2 control-label">Duration: </label>
-        <div class="col-md-10">
-          <input type="text" class="col-sm-6" formControlName="duration">
-        </div>
-        <label class=" col-md-2 control-label">Tags :<span class="required-asterisk">*</span> </label>
-        <div class="col-md-10">
-          <input type="text" formControlName="tags"
+        &nbsp; &nbsp;
+        <span class="text-danger"
+          *ngIf="videoControls.url.errors && videoControls.url.touched || videoControls.url.dirty ">
+          <span *ngIf="videoControls.url.errors?.required">Url is required</span>
+        </span>
+      </div>
+      <label class=" col-md-2 control-label">Duration: </label>
+      <div class="col-md-10">
+        <input type="text" placeholder="01:01:01" class="col-sm-6" formControlName="duration">
+      </div>
+      <label class=" col-md-2 control-label">Tags :<span class="required-asterisk">*</span> </label>
+      <div class="col-md-10">
+        <input type="text" formControlName="tags"
           [ngClass]="{'has-error': videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty }">
-          &nbsp; &nbsp;
-          <span class="text-danger" *ngIf="videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty "> 
-           <span  *ngIf="videoControls.tags.errors?.required">Tags are required</span>
-          </span>
+        &nbsp; &nbsp;
+        <span class="text-danger"
+          *ngIf="videoControls.tags.errors && videoControls.tags.touched || videoControls.tags.dirty ">
+          <span *ngIf="videoControls.tags.errors?.required">Tags are required</span>
+        </span>
+      </div>
+      <label class=" col-md-2 control-label">Description </label>
+      <div class="col-md-10">
+        <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+      </div>
+      <label for="levels" class=" col-md-2 control-label">Level :<span class="required-asterisk">*</span></label>
+      <div class="col-md-10">
+        <div formGroupName="level">
+          <select (change)=setLevelId($event.target.value) id="levels" formControlName="id">
+            <option value="" disabled selected>select</option>
+            <option *ngFor="let level of levels" [value]="level.id">{{level.name}}</option>
+          </select>
         </div>
-        <label class=" col-md-2 control-label">Description </label>
-        <div class="col-md-10">
-          <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+      </div>
+      <label class=" col-md-2 control-label">Category :<span class="required-asterisk">*</span></label>
+      <div class="col-md-10">
+        <div formGroupName="category">
+          <select (change)=setCategoryId($event.target.value) id="categories" formControlName="id">
+            <option value="" disabled selected>select</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+          </select>
         </div>
-        <label for="levels" class=" col-md-2 control-label">Level :<span class="required-asterisk">*</span></label>
-        <div class="col-md-10">
-          <div formGroupName="level">
-            <select (change)=setLevelId($event.target.value) id="levels" formControlName="id">
-              <option value="" disabled selected>select</option>
-              <option *ngFor="let level of levels" [value]="level.id">{{level.name}}</option>
-            </select>
+      </div>
+      <label class=" col-md-2 control-label">Transcript: </label>
+      <div class="col-md-10">
+        <input type="file" (change)=uploadFile($event) class="col-sm-6 form-control-file border"
+          formControlName="transcript">
+        <br />
+        <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
+      </div>
+      <label class=" col-md-2 control-label">Active: </label>
+      <div class="col-md-10">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <input type="radio" value="true" [checked]="videoForm.value.status===true" formControlName="status">
+                <label>Yes</label>
+              </td>&nbsp;&nbsp;
+              <td>
+                <input type="radio" value="false" [checked]="videoForm.value.status===false" formControlName="status">
+                <label>No</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--end of video form-->
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-10">
+            <legend>Reference Artifact(s)</legend>
           </div>
         </div>
-        <label class=" col-md-2 control-label">Category :<span class="required-asterisk">*</span></label>
-        <div class="col-md-10">
-          <div formGroupName="category">
-            <select (change)=setCategoryId($event.target.value) id="categories" formControlName="id">
-              <option value="" disabled selected>select</option>
-              <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
-            </select>
-          </div>
-        </div>
-        <label class=" col-md-2 control-label">Transcript: </label>
-        <div class="col-md-10">
-          <input type="file"  (change)=uploadFile($event) class="col-sm-6 form-control-file border" formControlName="transcript">
-        </div>
-        <label class=" col-md-2 control-label">Active: </label>
-         <div class="col-md-10">
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <input type="radio" value="true" [checked]="videoForm.value.status===true" formControlName="status">
-                    <label>Yes</label>
-                  </td>&nbsp;&nbsp;
-                  <td>
-                    <input type="radio" value="false" [checked]="videoForm.value.status===false" formControlName="status">
-                    <label>No</label>
-                  </td>
-                </tr>
-              </tbody>
-            </table>    
-          </div>&nbsp;&nbsp;&nbsp;
-        <!--end of video form-->
-  
-        <br /><br /><br /><br />
-        <fieldset class="border p-6">
-        <div class="col-md-10">
-         
-            <div class="row">
-              <div class="col-md-10">
-                <legend>Reference Artifact(s)</legend>
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-primary" (click)="addRefArt()">Add</button>
-              </div>
-            </div>
-            <hr />
-            <div formArrayName="referenceArtifact">
-              <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifact')['controls'];
-         let refArtindex=index" [formGroupName]="refArtindex">
-                <div class="form-group row">
-                  <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
-                  <div class="col-md-10">
-                    <input type="text" class="col-sm-6" formControlName="name" />
-                  </div>
-                  <label class=" col-md-2 control-label">Artifact :<span class="required-asterisk">*</span></label>
-                  <div class="col-md-10">
-                    <input type="file" id="fileInput"  (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
-                    <br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                    Existing file: <input style="border:none;font-size:smaller;" formControlName="filename" readonly />
-                  </div><br/><br/>
-                  
-                  <label class=" col-md-2 control-label">Description:</label>
-                  <div class="col-md-10">
-                    <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
-                  </div>
-                  <br /><br /><br />
-                  
-                  <button  class="btn btn-danger btn-sm" (click)="deleteRefArt(refArtindex)">Remove </button>
-                </div>
-                <br /> <br />
-              </div>
-            </div>
-         
-        </div>
-      </fieldset>
-        <!--end of ref art-->
-  
-        <br /><br /><br /><br />
-        <div class="col-md-10">
-          <fieldset>
-            <div class="row">
-              <div class="col-md-10">
-                <legend>Sample Program(s)</legend>
-              </div>
-              <div class="col-md-2">
-                <button class="btn btn-primary" (click)="addSamProg()">Add</button>
-              </div>
-            </div>
-            <hr />
-            <div formArrayName="sampleProgram">
-              <div *ngFor="let sampleProgram of videoForm.get('sampleProgram')['controls'];
-         let samProgindex=index" [formGroupName]="samProgindex">
-                <div class="form-group row">
-                  <label class=" col-md-2 control-label">Name : <span class="required-asterisk">*</span></label>
-                  <div class="col-md-10">
-                    <input type="text" class="col-sm-6" formControlName="name" />
-                  </div><br/><br/>
-                  <label class=" col-md-2 control-label">Artifact : <span class="required-asterisk">*</span></label>
-                  <div class="col-md-10">
-                    <input type="file"  (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
-                    <br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                    Existing file: <input style="border:none;font-size:smaller;" formControlName="filename" readonly />
-                  </div><br/><br/>
-                  <label class=" col-md-2 control-label">Description:</label>
-                  <div class="col-md-10">
-                    <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
-                  </div>
-                  <div id="textarea_feedback"></div>
-                  <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>
-                </div>
-                <br /> <br />
-              </div>
-            </div>
-          </fieldset>
-        </div>
-        <!--end of samp prog-->
+        <hr />
         <div *ngFor="let video of videoobj">
-          <div *ngFor="let ref of video.referenceUrl">
-            <p>{{ref.id}}</p>
-         </div>
-        </div>
-        <br /><br /><br /><br />
-        <div class="col-md-10">
-          <div class="row">
-            <div class="col-md-10">
-              <legend>Reference Url(s)</legend>
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-primary" (click)="addRefUrl()">Add</button>
+          <div formArrayName="referenceArtifact">
+            <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifact')['controls'];
+         let refArtindex=index;let refArt of video.referenceArtifact" [formGroupName]="refArtindex">
+              <div class="form-group row">
+                <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
+                <div class="col-md-10">
+                  <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
+                </div>
+                <label class=" col-md-2 control-label">Artifact :<span class="required-asterisk">*</span></label>
+                <div class="col-md-10">
+                  <input type="file" id="fileInput" (change)=uploadFile($event) class="col-sm-6"
+                    formControlName="file" />
+                  <br />
+                  <label id="left-intend">Existing file: </label>&nbsp;<input size="50" style="border:none;font-size:smaller;" formControlName="filename" readonly />
+                  <br />
+                  <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
+                </div><br /><br />
+
+                <label class=" col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                  <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                    formControlName="description"></textarea>
+                </div>
+                <br /><br /><br />
+
+                <button class="btn btn-danger btn-sm" (click)="deleteRefArtById(refArt.id)">Remove </button>
+              </div>
+              <br /> <br />
             </div>
           </div>
-          <hr />
-          
-          <div *ngFor="let video of videoobj">
+        </div>
+      </div>
+      <!--end of ref art-->
+
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-10">
+            <legend>Sample Program(s)</legend>
+          </div>
+        </div>
+        <hr />
+        <div *ngFor="let video of videoobj">
+          <div formArrayName="sampleProgram">
+            <div *ngFor="let sampleProgram of videoForm.get('sampleProgram')['controls'];
+         let samProgindex=index;let samProg of video.SampleProgram" [formGroupName]="samProgindex">
+              <div class="form-group row">
+                <label class=" col-md-2 control-label">Name : <span class="required-asterisk">*</span></label>
+                <div class="col-md-10">
+                  <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
+                </div><br /><br />
+                <label class=" col-md-2 control-label">Artifact : <span class="required-asterisk">*</span></label>
+                <div class="col-md-10">
+                  <input type="file" (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
+                  <br />
+                  <label id="left-intend">Existing file: </label>&nbsp;<input id="left" size="50" style="border:none;font-size:smaller;" formControlName="filename" readonly />
+                  <br />
+                  <span id="left" class="content-size">Note: Allowed file size should be less than 20MB </span>
+                </div><br /><br />
+                <label class=" col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                  <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                    formControlName="description"></textarea>
+                </div>
+                <button class="btn btn-danger btn-sm" (click)="deleteSamProgById(samProg.id)">Remove </button>
+              </div>
+              <br /> <br />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end of samp prog-->
+      <div *ngFor="let video of videoobj">
+        <div *ngFor="let ref of video.referenceUrl">
+          <p>{{ref.id}}</p>
+        </div>
+      </div>
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-10">
+            <legend>Reference Url(s)</legend>
+          </div>
+
+        </div>
+        <hr />
+
+        <div *ngFor="let video of videoobj">
           <div formArrayName="referenceUrl">
             <div *ngFor="let referenceUrl of videoForm.get('referenceUrl')['controls'];
          let refUrlindex=index;let ref of video.referenceUrl" [formGroupName]="refUrlindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="name" />
+                  <input type="text" placeholder="steps to install java" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Url :<span class="required-asterisk">*</span></label>
                 <div class="col-md-10">
@@ -217,24 +219,24 @@
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+                  <textarea placeholder="description" rows=3 cols=20 maxlength="250"
+                    formControlName="description"></textarea>
                 </div>
-                <!-- <div class="col-md-10">
-                  <input type="text" class="col-sm-6" placeholder="{{ref.id}}"/>
-                </div> -->
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" placeholder="{{ref.id}}" />
+                </div>
                 <br /><br /><br />
-                <button  class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>
-                <!-- <button class="btn btn-danger btn-sm" (click)="deleteRefUrlById(ref.id)">Remove by id </button> -->
+                <button class="btn btn-danger btn-sm" (click)="deleteRefUrlById(ref.id)">Remove</button>
               </div>
               <br /> <br />
             </div>
           </div>
-          </div><!--end of video obj-->
         </div>
-        <!--end of ref art-->
-  
+        <!--end of video obj-->
       </div>
-    </form>
-    {{videoForm.value|json}}
-  </div>
-  
+      <!--end of ref art-->
+
+    </div>
+  </form>
+  {{videoForm.value|json}}
+</div>
